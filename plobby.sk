@@ -1,0 +1,85 @@
+options:
+	tag: &7[&6*&7]
+	per: {&cNie masz uprawnien!}
+	blok: redstone block
+on walking on {@blok}:
+	if {skocznia.%player%} is set:
+		if {skocznia.%player%} is "1":
+			if player has permission "plobby.skocznia":
+				push player upwards at speed 10
+				wait 1 second
+				push player forward at speed 10
+				send "{@tag} Lec! :D"
+			else:
+				send "{@tag} {@per}"
+		else:
+			send "{@tag} Musisz wlaczyc skocznie komenda /skocznie"
+	else:
+		set {skocznia.%player%} to "1"
+on break:
+	if player don't have permission "plobby.budowanie":
+		cancel event
+		send "{@tag} {@per}"
+on place:
+	if player don't have permission "plobby.budowanie":
+		cancel event
+		send "{@tag} {@per}"
+command /skocznie:
+	trigger:
+		if {skocznie.%player%} is "1":
+			set {skocznie.%player%} to "0"
+			send "{@tag} Skocznie wylaczone!"
+		else if {skocznie.%player%} is "0":
+			set {skocznie.%player%} to "1"
+			send "{@tag} Skocznie wlaczone!"
+		else:
+			set {skocznie.%player%} to "1"
+			send "{@tag} Skocznie wlaczone!"
+command /sb:
+	trigger:
+		display board named "&dSDT" to player
+		make score "&aAktualnie:" in board of player to 6
+		make score "%number of players%" in board of player to 5
+		make score "&9" in board of player to 4
+		make score "&aNick" in board of player to 3
+		make score "&l%display name of player%" in board of player to 2
+		move display of player to "sidebar"
+on join:
+# wywalilem to co dales, pirat bo bugowalo skrypt
+	execute player command "/sb"
+	remove compass named "&aWybierz serwer" from the player
+	remove clock named "&eGracze: &aON" from player
+	remove clock named "&eGracze: &cOFF" from player
+	remove bone named "&aZwierzeta" from player
+	give compass named "&aWybierz serwer" to the player
+	give clock named "&eGracze: &aON" to the player
+	set {plobby.widocznosc.%player%} to 1 
+	give bone named "&aZwierzeta" to player
+	apply speed 2 to the player for 999 days
+	apply jump boost 2 to the player for 999 days
+every 1 tick:
+	loop all players:
+		if {plobby.widocznosc.%loop-player%} is set:
+			if {plobby.widocznosc.%loop-player%} is 0:
+				hide all players from loop-player
+			else:
+				reveal all players to loop-player
+		else:
+			set {plobby.widocznosc.%loop-player%} to 1
+on rightclick with clock:
+	if name of player's tool is "&eGracze: &cOFF":
+		set {plobby.widocznosc.%player%} to 0
+		set name of player's tool to "&eGracze: &aON"
+		send "{@tag} Gracze zostali pokazani!"
+	else:
+		set {plobby.widocznosc.%player%} to 1
+		set name of player's tool to "&eGracze: &cOFF"
+		send "{@tag} Gracze zostali ukryci!"
+on xp spawn:
+	cancel event
+on pickup:
+	if player don't have permission "plobby.drop":
+		cancel event
+on drop:
+	if player don't have permission "plobby.drop":
+		cancel event
