@@ -2,6 +2,7 @@ options:
 	tag: &7[&6*&7]
 	per: {&cNie masz uprawnien!}
 	blok: redstone block
+	swiat: lobby
 on walking on {@blok}:
 	if {skocznia.%player%} is set:
 		if {skocznia.%player%} is "1":
@@ -77,3 +78,8 @@ on pick up:
 on drop:
 	if player don't have permission "plobby.drop":
 		cancel event
+		
+on any move:
+	player is in world "{@swiat}":
+		player has permission "plobby.vip":
+			play 1 of effect "heart" with data 1 at player
