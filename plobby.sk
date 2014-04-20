@@ -57,28 +57,22 @@ on join:
 	give bone named "&aZwierzeta" to player
 	apply speed 2 to the player for 999 days
 	apply jump boost 2 to the player for 999 days
-every 1 tick:
-	loop all players:
-		if {plobby.widocznosc.%loop-player%} is set:
-			if {plobby.widocznosc.%loop-player%} is 0:
-				hide all players from loop-player
-			else:
-				reveal all players to loop-player
-		else:
-			set {plobby.widocznosc.%loop-player%} to 1
 on rightclick with clock:
 	if name of player's tool is "&eGracze: &cOFF":
-		set {plobby.widocznosc.%player%} to 0
+		reveal all players to player
 		set name of player's tool to "&eGracze: &aON"
 		send "{@tag} Gracze zostali pokazani!"
+		stop
 	else:
-		set {plobby.widocznosc.%player%} to 1
+		hide all players from player
 		set name of player's tool to "&eGracze: &cOFF"
 		send "{@tag} Gracze zostali ukryci!"
+		stop
 on xp spawn:
-	cancel event
-on pickup:
-	if player don't have permission "plobby.drop":
+	entity is in world "{@swiat}":
+		cancel event
+on pick up:
+	if player don't have permission "plobby.pick":
 		cancel event
 on drop:
 	if player don't have permission "plobby.drop":
