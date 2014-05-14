@@ -83,3 +83,5 @@ on any move:
 	player is in world "{@swiat}":
 		player has permission "plobby.vip":
 			play 1 of effect "heart" with data 1 at player
+			
+			papug jest głupi
